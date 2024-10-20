@@ -1,0 +1,29 @@
+function doGet() {
+  var formAUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdlDTqSfpObDJLDwE1sbGSriSoBig2MfNh01ZMvcD2rf0Suig/viewform?usp=sf_link";
+  var formBUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfdEo_4lGB5y8zUbzC_LzCCZ46zpPkxPnqkhsmVmVmayMBeyQ/viewform?usp=sf_link";
+  
+  // 隨機選擇一個表單 URL
+  var randomNumber = Math.random();
+  var redirectUrl = (randomNumber < 0.5) ? formAUrl : formBUrl;
+  var formVersion = (randomNumber < 0.5) ? "A" : "B"; // 記錄分配的表單版本
+
+  // 生成自動跳轉並支援手機裝置的 HTML
+  var html = HtmlService.createHtmlOutput('<html>' +
+    '<head>' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +  // 響應式視窗標籤
+      '<style>' +
+        'body { font-family: Arial, sans-serif; text-align: center; padding: 10%; background-color: #f0f0f0; }' +
+        'h1 { font-size: 2em; }' +
+        'p { font-size: 1.2em; color: #333; }' +
+      '</style>' +
+    '</head>' +
+    '<body>' +
+      '<h1>重定向中...</h1>' +
+      '<p>正在自動跳轉，請稍候。</p>' +
+      '<script>window.location.href="' + redirectUrl + '";</script>' +
+    '</body>' +
+    '</html>');
+
+  // 返回 HTML 頁面
+  return html.setTitle("Redirecting").setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
